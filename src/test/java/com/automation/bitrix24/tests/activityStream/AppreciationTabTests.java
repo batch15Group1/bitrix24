@@ -14,17 +14,8 @@ import org.testng.annotations.Test;
 
 public class AppreciationTabTests extends AbstractTestBase {
 
-    //peer review :
-    //All clean codes and you have great implementations
-    //2 important point is:
-    //We do not find elements in test class, all locators must be in page class
-    //And all wait methods needs to be used in page class as common practice.
-
-    private WebDriver driver = Driver.getDriver();
     AppreciationTab appreciationTab = new AppreciationTab();
 
-    @FindBy(className = "bxhtmled-top-bar-wrap")
-    private WebElement editorTextBar;
 
     @Test(description = "US 6 -AC6")
     public void verifySelectedContactName() {
@@ -50,10 +41,9 @@ public class AppreciationTabTests extends AbstractTestBase {
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
-        BrowserUtils.wait(2);
+
         appreciationTab.clickVisualEditor();
-        BrowserUtils.wait(3);
-        Assert.assertTrue(driver.findElement(By.className("bxhtmled-top-bar-wrap")).isDisplayed());
+        Assert.assertTrue(appreciationTab.editorTextBarDisplay());
 
         test.pass("Editor text bar displayed successfully");
 
@@ -67,10 +57,10 @@ public class AppreciationTabTests extends AbstractTestBase {
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
-        BrowserUtils.wait(2);
+
         appreciationTab.clickTopicIcon();
-        WebElement topicTitle = driver.findElement(By.id("blog-title"));
-        Assert.assertTrue(topicTitle.isDisplayed());
+
+        Assert.assertTrue(appreciationTab.topicTitleDisplay());
 
         test.pass("Topic text box displayed successfully");
     }
@@ -84,6 +74,8 @@ public class AppreciationTabTests extends AbstractTestBase {
         appreciationTab.navigateTo("Appreciation");
 
         appreciationTab.createNewTag("#Batch15");
+
+
 
     }
 
