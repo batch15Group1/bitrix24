@@ -43,5 +43,4 @@ public class EventTabTests extends AbstractTestBase {
 
         test.pass("select documents from Btrix24 is verified");
     }
-//hc
 }
