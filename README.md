@@ -1,1 +1,1 @@
-Please follow Git Guideline.docx
+Please follow git_guideline.txt
