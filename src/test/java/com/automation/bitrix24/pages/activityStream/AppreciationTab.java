@@ -124,6 +124,13 @@ public class AppreciationTab extends AbstractPageBase {
     @FindBy(className = "popup-window-button")
     private WebElement addTagButton;
 
+
+    @FindBy(className = "bxhtmled-top-bar-wrap")
+    private WebElement editorTextBar;
+
+    @FindBy(id = "blog-title")
+    private WebElement topicTitle;
+
     public String addaQuotetotheMessage(String message) {
         wait.until(ExpectedConditions.visibilityOf(quoteButton)).click();
         driver.switchTo().frame(wait.until(ExpectedConditions.visibilityOf(iframeforQuote)));
@@ -170,5 +177,14 @@ public class AppreciationTab extends AbstractPageBase {
         BrowserUtils.wait(5);
     }
 
+    public boolean editorTextBarDisplay(){
+        BrowserUtils.wait(5);
+        return editorTextBar.isDisplayed();
+    }
+
+    public boolean topicTitleDisplay(){
+        BrowserUtils.wait(5);
+        return topicTitle.isDisplayed();
+    }
 }
 
