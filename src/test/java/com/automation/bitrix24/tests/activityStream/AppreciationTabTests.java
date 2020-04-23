@@ -10,7 +10,10 @@ import org.testng.annotations.Test;
 public class AppreciationTabTests extends AbstractTestBase {
 
 
-
+    /**
+     * 6. User should be able to add mention by clicking on the Add mention icon and
+     * select contacts from the lists provided in dropdown.
+     */
 
     @Test(description = "US 6 -AC6")
     public void verifySelectedContactName() {
@@ -29,6 +32,10 @@ public class AppreciationTabTests extends AbstractTestBase {
         test.pass("User click add mention icon and selected contact name successfully");
     }
 
+    /**
+     * 7. User should be able to click on Visual Editor and
+     * see the editor text-bar displays on top of the message box.
+     */
 
     @Test(description = "US 6 -AC7")
     public void verifyEditorTextBarDisplay() {
@@ -43,10 +50,14 @@ public class AppreciationTabTests extends AbstractTestBase {
         appreciationTab.clickVisualEditor();
         Assert.assertTrue(appreciationTab.editorTextBarDisplay());
 
-        test.pass("Editor text bar displayed successfully");
+        test.pass("Editor text bar is displayed successfully");
 
     }
 
+    /**
+     * User should be able to click on the Topic icon to see
+     * the Appreciation Topic text box displays on top of the message box.
+     */
 
     @Test(description = "US 6 -AC8")
     public void verifyTopicTextBoxDisplay() {
@@ -61,10 +72,12 @@ public class AppreciationTabTests extends AbstractTestBase {
 
         Assert.assertTrue(appreciationTab.topicTitleDisplay());
 
-        test.pass("Topic text box displayed successfully");
+        test.pass("Topic text box is displayed successfully");
     }
 
-
+    /**
+     * User should be able to  creating new tags by clicking on the # icon.
+     */
     @Test(description = "US 6 -AC10")
     public void verifyCreatedNewTag() {
         test = report.createTest("Create new Tag ");
@@ -75,7 +88,12 @@ public class AppreciationTabTests extends AbstractTestBase {
 
         appreciationTab.createNewTag("#Batch15");
 
+        String actual=appreciationTab.getTagName().substring(1);
+        String expected="Batch15";
 
+        Assert.assertEquals(actual,expected);
+
+        test.pass("Tag is created successfully");
 
     }
 
