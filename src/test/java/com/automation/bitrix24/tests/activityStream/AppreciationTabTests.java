@@ -4,22 +4,18 @@ import com.automation.bitrix24.pages.LoginPage;
 import com.automation.bitrix24.pages.activityStream.AppreciationTab;
 import com.automation.bitrix24.tests.AbstractTestBase;
 import com.automation.bitrix24.utilities.BrowserUtils;
-import com.automation.bitrix24.utilities.Driver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AppreciationTabTests extends AbstractTestBase {
 
-    AppreciationTab appreciationTab = new AppreciationTab();
+
 
 
     @Test(description = "US 6 -AC6")
     public void verifySelectedContactName() {
         test = report.createTest("Click add mention icon and select contact ");
+        AppreciationTab appreciationTab = new AppreciationTab();
         LoginPage loginPage = new LoginPage();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
@@ -36,8 +32,10 @@ public class AppreciationTabTests extends AbstractTestBase {
 
     @Test(description = "US 6 -AC7")
     public void verifyEditorTextBarDisplay() {
+
         test = report.createTest("Editor text bar display");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
@@ -54,6 +52,7 @@ public class AppreciationTabTests extends AbstractTestBase {
     public void verifyTopicTextBoxDisplay() {
         test = report.createTest("Topic text icon display");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
@@ -70,6 +69,7 @@ public class AppreciationTabTests extends AbstractTestBase {
     public void verifyCreatedNewTag() {
         test = report.createTest("Create new Tag ");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
