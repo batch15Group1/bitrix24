@@ -1,10 +1,14 @@
 package com.automation.bitrix24.pages.activityStream;
 
 import com.automation.bitrix24.pages.AbstractPageBase;
+import com.automation.bitrix24.utilities.BrowserUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.Collections;
+import java.util.List;
 
 public class MessageTabPage extends AbstractPageBase {
 
@@ -14,8 +18,17 @@ public class MessageTabPage extends AbstractPageBase {
     @FindBy(css = "[id='bx-b-uploadfile-blogPostForm']")
     private WebElement uploadFileIcon;
 
-    @FindBy(css = "[class='bxhtmled-top-bar-btn bxhtmled-button-link']")
+    @FindBy(css = "span[title='Link']")
     private WebElement linkIcon;
+
+    @FindBy(css = "[id='linkidPostFormLHE_blogPostForm-text']")
+    private WebElement linkTextInput;
+
+    @FindBy(css = "[id='linkidPostFormLHE_blogPostForm-href']")
+    private WebElement linkURLInput;
+
+    @FindBy(css = "input[value='Save']")
+    private WebElement linkSaveBtn;
 
     @FindBy(css = "[class='bxhtmled-top-bar-btn bxhtmled-button-video bxhtmled-top-bar-btn-active']")
     private WebElement videoIcon;
@@ -41,6 +54,15 @@ public class MessageTabPage extends AbstractPageBase {
     @FindBy(css = "[id='bx-destination-tag']")
     private WebElement toInputAddMore;
 
+    @FindBy(css = "[id^='destLastTab_destination']")
+    private WebElement toInputRecentLink;
+
+    @FindBy(css = "[id^='destDepartmentTab_destination']")
+    private WebElement toInputEmployeesAndDepartmentsLink;
+
+    @FindBy(css = "[id^='destEmailTab_destination']")
+    private WebElement toInputEmailUsersLink;
+
     @FindBy(css = "[id='lhe_button_editor_blogPostForm']")
     private WebElement visualEditorIcon;
 
@@ -62,14 +84,42 @@ public class MessageTabPage extends AbstractPageBase {
     @FindBy(xpath = "//*[@id=\"diskuf-selectdialog-s3eFTzF\"]/div[2]/table/tbody/tr[3]/td[3]/span/span/span[1]/span")
     private WebElement createUsingDesktopApplicationLink;
 
-    @FindBy(css = "[id^='destLastTab_destination']")
-    private WebElement toInputRecentLink;
+    @FindBy(css = "iframe[class='bx-editor-iframe']")
+    private WebElement iframe;
 
-    @FindBy(css = "[id^='destDepartmentTab_destination']")
-    private WebElement toInputEmployeesAndDepartmentsLink;
+    @FindBy(css = "a[href='www.google.com']")
+    private WebElement linkInBody;
 
-    @FindBy(css = "[id^='destEmailTab_destination']")
-    private WebElement toInputEmailUsersLink;
+
+    @FindBy (xpath = "//*[@id='feed-add-post-destination-item']/span[2]/span")
+    private WebElement addedToInput;
+
+    public String  getAddedToInputText(){
+        return wait.until(ExpectedConditions.visibilityOf(addedToInput)).getText();
+    }
+
+    public String getPeopleWithNumText(int num){
+        List<WebElement> peopleList=driver.findElements(By.cssSelector("[class='bx-finder-box-item-t7-name']"));
+        if(num<=peopleList.size()){
+           return peopleList.get(num).getText();
+        }else{
+          return  null;
+        }
+    }
+    public void clickOnPeopleWithNum(int num){
+        List<WebElement> peopleList=driver.findElements(By.cssSelector("[class='bx-finder-box-item-t7-name']"));
+        if(num<=peopleList.size()){
+             peopleList.get(num).click();
+        }else{
+            System.out.println("not in recent people list");
+        }
+
+    }
+
+    public String getLinkInBodyText() {
+        driver.switchTo().frame(iframe);
+        return wait.until(ExpectedConditions.visibilityOf(linkInBody)).getText();
+    }
 
     public void clickuploadFilesAndImagesLink() {
         wait.until(ExpectedConditions.visibilityOf(topicIcon)).click();
@@ -124,6 +174,18 @@ public class MessageTabPage extends AbstractPageBase {
 
     public void clickLinkIcon() {
         wait.until(ExpectedConditions.visibilityOf(linkIcon)).click();
+    }
+
+    public void enterLinkTextInput(String linkText) {
+        wait.until(ExpectedConditions.visibilityOf(linkTextInput)).sendKeys(linkText);
+    }
+
+    public void enterLinkURLInput(String linkURL) {
+        wait.until(ExpectedConditions.visibilityOf(linkURLInput)).sendKeys(linkURL);
+    }
+
+    public void clickLinkSaveBtn() {
+        wait.until(ExpectedConditions.elementToBeClickable(linkSaveBtn)).click();
     }
 
     public void clickUploadFileIcon() {
