@@ -79,7 +79,7 @@ public class AppreciationTabTests extends AbstractTestBase {
 
     }
 
-    @Test
+    @Test(description = "AC5")
     public void quoteTextBox() {
         test = report.createTest("Creating a quote through the icon displayed on the appreciation page as a Marketing user");
         LoginPage login = new LoginPage();
@@ -93,5 +93,59 @@ public class AppreciationTabTests extends AbstractTestBase {
         test.pass("Quote is written successfully");
 
     }
+
+    @Test(description = "AC3")
+    public void addLink(){
+        test = report.createTest("Add a link and explanation, and send it to everyone");
+        LoginPage login = new LoginPage();
+        login.loginAsMarketing();
+        AppreciationTab appreciation = new AppreciationTab();
+        appreciation.navigateTo("Appreciation");
+        appreciation.addaLink("https://www.amazon.com/","amazonwebsite");
+        Assert.assertEquals(appreciation.returnTitleofAddedLink(),"Amazon.com: Online Shopping for Electronics, Apparel, Computers, Books, DVDs & more");
+        test.pass("Link was added successfully");
+    }
+
+    @Test (description = "AC1-TC1-addLink")
+    public void addaImage(){
+        test = report.createTest("Upload file and images from local");
+        LoginPage login = new LoginPage();
+        login.loginAsMarketing();
+        AppreciationTab appreciation = new AppreciationTab();
+        appreciation.navigateTo("Appreciation");
+        Assert.assertTrue(appreciation.addFileFromLocal());
+        test.pass("Image was added successfully");
+
+    }
+
+
+    @Test(description = "AC4-TC1-vimeoURL")
+    public void insertVideoVimeo(){
+        test = report.createTest("Upload a vimeo vidoe");
+        LoginPage login = new LoginPage();
+        login.loginAsMarketing();
+        AppreciationTab appreciation = new AppreciationTab();
+        appreciation.navigateTo("Appreciation");
+        Assert.assertTrue(appreciationTab.InsertVideo("https://vimeo.com/223939510"));
+        test.pass("Vimeo video was inserted successfully");
+    }
+
+
+    @Test(description = "AC4-TC2-youtubeURL")
+    public void insertVideoYoutube(){
+        test = report.createTest("Upload a youtube vidoe");
+        LoginPage login = new LoginPage();
+        login.loginAsMarketing();
+        AppreciationTab appreciation = new AppreciationTab();
+        appreciation.navigateTo("Appreciation");
+        Assert.assertTrue(appreciationTab.InsertVideo("https://www.youtube.com/watch?v=WPvGqX-TXP0"));
+        test.pass("Youtube video was inserted successfully");
+    }
+
+
+
+
+
+
 
 }
