@@ -11,6 +11,37 @@ public class WorkflowTabTests extends AbstractTestBase {
 
     protected WebDriver driver = Driver.getDriver();
 
+
+
+
+    /**
+     * US8_AC2
+     * under Business Trip
+     * send a Business Trip request
+     * after sending approval message
+     * to selected people
+     */
+    @Test()
+    public void upload(){
+        LoginPage loginPage = new LoginPage();
+        WorkflowTab workflowTab = new WorkflowTab();
+
+        loginPage.loginAsHelpDesk();
+        workflowTab.workflowNavigation("Business Trip");
+
+        workflowTab.bTripEnterTitle("help desk");
+        workflowTab.bTripEnterDestination("Boston");
+        workflowTab.bTripEnterDate("04/25/2020","04/29/2020");
+        workflowTab.bTripEnterPurpose("business trip");
+        workflowTab.bTripEnterExpenses("1231");
+        workflowTab.bTripSelectCurrency("USD");
+        workflowTab.bTripAttachDocs();
+        workflowTab.assignApprovers("Support");
+        workflowTab.sendOrCancel("send");
+
+        workflowTab.verifyBusinessTrip(); // workflow parameters needs to be configured (BUG?)
+    }
+
     /**
      * US8_AC3
      * under General Requests
@@ -32,4 +63,5 @@ public class WorkflowTabTests extends AbstractTestBase {
 
         workflowTab.verifyRequestSent();
     }
+
 }

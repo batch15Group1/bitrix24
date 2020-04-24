@@ -2,6 +2,7 @@ package com.automation.bitrix24.pages.activityStream;
 
 import com.automation.bitrix24.pages.AbstractPageBase;
 import com.automation.bitrix24.utilities.BrowserUtils;
+import com.automation.bitrix24.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -68,8 +70,11 @@ public class WorkflowTab extends AbstractPageBase {
     @FindBy(xpath = "//input[@type='text' and @name='PROPERTY_70[n0][VALUE]']")
     private WebElement bTripDestination;
 
-    @FindBy(css = "[class='bx-lists-input-calendar']")
-    private WebElement bTripBothDates;
+    @FindBy(xpath = "(//input[@class='bx-lists-input-calendar'])[1]")
+    private WebElement bTripStartDate;
+
+    @FindBy(xpath = "(//input[@class='bx-lists-input-calendar'])[2]")
+    private WebElement bTripEndDate;
 
     @FindBy(css = "[name='PREVIEW_TEXT']")
     private WebElement bTripPurpose;
@@ -110,8 +115,59 @@ public class WorkflowTab extends AbstractPageBase {
     @FindBy(css = "[name='PROPERTY_82']")
     private WebElement eReportDocsAndReceipts;
 
+    @FindBy(css = "[class='webform-small-button webform-button-cancel']")
+    private WebElement approvalCloseBtn;
+
+    @FindBy(css = "[id='bx-lists-popup']")
+    private WebElement approvalFrame;
 
 
+
+
+    /**
+     * to assign approver
+     * enter as many people needed
+     * takes an ArrayList of people names
+     * matches them with Send Message buttons
+     * uses 2 loops one for matching names with message buttons
+     * uses other loop for clicking those buttons
+     * */
+    public void assignApprovers(ArrayList<String> approver){
+        BrowserUtils.waitForPageToLoad(10);
+
+        ArrayList<WebElement> sendMsgBttns = new ArrayList<>(); //
+        for (String eachPerson: approver){
+            sendMsgBttns.add(   Driver.getDriver().findElement( By.xpath("//span[span='"+approver+"']/following-sibling::a") )   );
+        }
+        for (WebElement eachButton: sendMsgBttns){
+            try {
+                wait.until(ExpectedConditions.visibilityOf(eachButton));
+                eachButton.click();
+            } catch (Exception e){
+                System.out.println("Couldn't find the person");
+            }
+        }
+
+        approvalCloseBtn.click(); // after finishing sending messages, click "Close" button
+        wait.until(ExpectedConditions.invisibilityOf(approvalFrame));
+    }
+
+    /**
+     * simple version of assigning approver
+     * enter 1 person
+     * matches person with Send Message button
+     * */
+    public void assignApprovers(String approver){
+        BrowserUtils.waitForPageToLoad(10);
+        WebElement sendMsgBttn = Driver.getDriver().findElement( By.xpath("//span[span='"+approver+"']/following-sibling::a") );
+            try {
+                wait.until(ExpectedConditions.visibilityOf(sendMsgBttn));
+                sendMsgBttn.click();
+            } catch (Exception e){
+                System.out.println("Couldn't find the person");
+            }
+        approvalCloseBtn.click(); // after finishing sending messages, click "Close" button
+    }
 
     /**
      * choose submodules of Workflow:
@@ -183,14 +239,12 @@ public class WorkflowTab extends AbstractPageBase {
     public void sendOrCancel(String sendOrCancel) {
         BrowserUtils.waitForPageToLoad(10);
         BrowserUtils.scrollTo(cancel);
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        wait.until(ExpectedConditions.visibilityOf(send));
         if (sendOrCancel.trim().equalsIgnoreCase("send")) send.click();
         else if (sendOrCancel.trim().equalsIgnoreCase("cancel")) cancel.click();
         else throw new RuntimeException("no such button");
-        BrowserUtils.wait(4);
     }
 
-//  Common practice is not using explicit and implicit wait in same method. Choosing one of them is preferable.
     /**
      * implicit wait added after clicking on "More" module
      */
@@ -205,16 +259,20 @@ public class WorkflowTab extends AbstractPageBase {
         }
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         WebElement tabElement = driver.findElement(By.xpath(tabNameXpath));
-        wait.until(ExpectedConditions.elementToBeClickable(tabElement)).click();
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        tabElement.click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     public void verifyRequestSent(){
+        BrowserUtils.waitForPageToLoad(10);
         Assert.assertEquals(messagePlaceHolder.getText(), "Send message …");
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void lEnterDate(String start, String end){
+        BrowserUtils.waitForPageToLoad(10);
         List<WebElement> bothDates = (List<WebElement>) lApprovalBothDates;
         bothDates.get(0).sendKeys(start);
         bothDates.get(1).click();
@@ -222,6 +280,7 @@ public class WorkflowTab extends AbstractPageBase {
     }
 
     public void lSelectAbsenceType(String type){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         int index;
         switch (type.trim().toLowerCase()){
             case "(not set)":
@@ -259,38 +318,45 @@ public class WorkflowTab extends AbstractPageBase {
     }
 
     public void lApprovalEnterReasonForLeave(String reason){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         lApprovalReasonForLeave.sendKeys(reason);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void bTripEnterTitle(String title){
+        BrowserUtils.waitForPageToLoad(10);
         bTripTitle.sendKeys(title);
     }
 
     public void bTripEnterDestination(String destination){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         bTripDestination.sendKeys(destination);
     }
 
     public void bTripEnterDate(String start, String end){
-        List<WebElement> bothDates = (List<WebElement>) bTripBothDates;
-        bothDates.get(0).sendKeys(start);
-        bothDates.get(1).click();
-        bothDates.get(1).sendKeys(end);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        bTripStartDate.sendKeys(start);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        bTripEndDate.sendKeys(end);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     public void bTripEnterPurpose(String purpose){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         bTripPurpose.sendKeys(purpose);
     }
 
     public void bTripEnterExpenses(String expense){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         for (char c: expense.toCharArray()){
-            if (Character.isDigit(c)) throw new RuntimeException("Please enter only numbers");
+            if (!Character.isDigit(c)) throw new RuntimeException("Please enter only numbers");
         }
         bTripExpenses.sendKeys(expense);
     }
 
     public void bTripSelectCurrency(String currency){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         int index;
         switch (currency.trim().toUpperCase()){
             case "(not set)":
@@ -333,18 +399,25 @@ public class WorkflowTab extends AbstractPageBase {
         currencyType.selectByIndex(index);
     }
 
-    /***/
     public void bTripAttachDocs(){
-//        bTripAttDocs
+        BrowserUtils.waitForPageToLoad(7);
+        bTripAttDocs.sendKeys("C:\\Users\\TesterSTL\\Desktop\\sample.txt");
+    }
+
+    public void verifyBusinessTrip(){
+        BrowserUtils.waitForPageToLoad(10);
+        Assert.assertEquals(messagePlaceHolder.getText(), "Send message …");
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void pRequestEnterTitle(String title){
+        BrowserUtils.waitForPageToLoad(10);
         pRequestTitle.sendKeys(title);
     }
 
     public void pRequestEnterAmount(String amount){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         for (char c: amount.toCharArray()){
             if (Character.isDigit(c)) throw new RuntimeException("Please enter only numbers");
         }
@@ -352,6 +425,7 @@ public class WorkflowTab extends AbstractPageBase {
     }
 
     public void pRequestSelectCurrency(String currency){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         int index;
         switch (currency.trim().toUpperCase()){
             case "(not set)":
@@ -396,20 +470,24 @@ public class WorkflowTab extends AbstractPageBase {
 
     /***/
     public void pRequestAddFile(){
-//        pRequestFile
+        BrowserUtils.waitForPageToLoad(7);
+        pRequestFile.sendKeys("C:\\Users\\TesterSTL\\Desktop\\sample.txt");
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void eReportEnterTitle(String title){
+        BrowserUtils.waitForPageToLoad(10);
         eReportTitle.sendKeys(title);
     }
 
     public void eReportEnterDescription(String description){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         eReportDescription.sendKeys(description);
     }
 
     public void eReportEnterAmount(String amount){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         for (char c: amount.toCharArray()){
             if (Character.isDigit(c)) throw new RuntimeException("Please enter only numbers");
         }
@@ -417,6 +495,7 @@ public class WorkflowTab extends AbstractPageBase {
     }
 
     public void eReportSelectCurrency(String currency){
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         int index;
         switch (currency.trim().toUpperCase()){
             case "(not set)":
@@ -461,7 +540,8 @@ public class WorkflowTab extends AbstractPageBase {
 
     /***/
     public void eReportAddDocs(){
-//        eReportDocsAndReceipts
+        BrowserUtils.waitForPageToLoad(7);
+        eReportDocsAndReceipts.sendKeys("C:\\Users\\TesterSTL\\Desktop\\sample.txt");
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
