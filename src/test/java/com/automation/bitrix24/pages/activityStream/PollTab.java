@@ -4,16 +4,11 @@ import com.automation.bitrix24.pages.AbstractPageBase;
 import com.automation.bitrix24.utilities.BrowserUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 public class PollTab extends AbstractPageBase {
-
-    //peer review :
-    //your codes are nice and clean, only 1 issue mentioned below :
-    //this page class is for finding locators and wrap them with methods to use in test class.
-    //Since we do not run any test in this class; we do not use Assertion in here
-    //we do our assertions on test class =>   Assert.assertTrue(text.isDisplayed());
 
     /**
      *  US 4. As a user, I should be able to create a
@@ -78,6 +73,14 @@ public class PollTab extends AbstractPageBase {
     @FindBy(xpath = "//span[@id='feed-add-post-destination-item']/span[2]")
     private WebElement mentionedContact;
 
+   // 7. User should be able to click on Visual Editor and see the editor text-bar displays on top of the message box.
+
+    @FindBy(id = "lhe_button_editor_blogPostForm")
+    private WebElement visualEditor;
+
+    @FindBy(xpath = "//span[@class='bxhtmled-top-bar-btn bxhtmled-button-bold']")
+    private WebElement boldIcon;
+
 
 
     public void clickOnLinkIcon(){
@@ -99,19 +102,13 @@ public class PollTab extends AbstractPageBase {
         saveButton.click();
     }
 
-//    public void verifyIfLinkWasAttached(){
-//        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iFrame));
-//        // driver.switchTo().frame(iFrame);
-//        Assert.assertTrue(text.isDisplayed());
-//        driver.switchTo().defaultContent();
-//    }
-
     public void switchToIFrame(){
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iFrame));
     }
     public WebElement returnText(){
         return text;
     }
+
     public void exitFromIFrame(){
         driver.switchTo().defaultContent();
     }
@@ -144,6 +141,17 @@ public class PollTab extends AbstractPageBase {
     public WebElement getPostedQuote(){
         wait.until(ExpectedConditions.visibilityOf(postedQuote));
         return postedQuote;
+    }
+
+
+    public void clickOnVisualEditor(){
+        BrowserUtils.wait(2);
+        visualEditor.click();
+        BrowserUtils.wait(3);
+    }
+
+    public WebElement boldIconIsDisplayed(){
+        return boldIcon;
     }
 
 

@@ -11,13 +11,6 @@ import org.testng.annotations.Test;
 
 public class PollTabTests extends AbstractTestBase {
 
-    //peer review :
-    //you have clean code which is great
-    //but test is failed when I run, did not click the link icon
-    // it has issue with the locator => pollTab.clickOnLinkIcon();
-    //you can try to add wait on page class or you can check the locator :)
-
-
     /**
      *  US 4. As a user, I should be able to create a
      *  poll by clicking on Poll tab under Active Stream.
@@ -95,6 +88,25 @@ public class PollTabTests extends AbstractTestBase {
         Assert.assertTrue(pollTab.getMentionedContact().isDisplayed());
 
         test.pass("User able to mention contact");
+    }
+
+    // 7. User should be able to click on Visual Editor and see the editor text-bar displays on top of the message box.
+
+    @Test
+    public void visualEditor(){
+
+        test = report.createTest("Click on Visual Editor and see the editor text-bar displays");
+
+        LoginPage loginPage = new LoginPage();
+        loginPage.loginAsMarketing();
+
+        PollTab pollTab = new PollTab();
+        pollTab.navigateTo("Poll");
+
+        pollTab.clickOnVisualEditor();
+        Assert.assertTrue(pollTab.boldIconIsDisplayed().isDisplayed());
+
+        test.pass("Editor text-bar displayed");
     }
 
 
