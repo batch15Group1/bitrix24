@@ -4,22 +4,21 @@ import com.automation.bitrix24.pages.LoginPage;
 import com.automation.bitrix24.pages.activityStream.AppreciationTab;
 import com.automation.bitrix24.tests.AbstractTestBase;
 import com.automation.bitrix24.utilities.BrowserUtils;
-import com.automation.bitrix24.utilities.Driver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AppreciationTabTests extends AbstractTestBase {
 
-    AppreciationTab appreciationTab = new AppreciationTab();
 
+    /**
+     * 6. User should be able to add mention by clicking on the Add mention icon and
+     * select contacts from the lists provided in dropdown.
+     */
 
     @Test(description = "US 6 -AC6")
     public void verifySelectedContactName() {
         test = report.createTest("Click add mention icon and select contact ");
+        AppreciationTab appreciationTab = new AppreciationTab();
         LoginPage loginPage = new LoginPage();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
@@ -33,11 +32,17 @@ public class AppreciationTabTests extends AbstractTestBase {
         test.pass("User click add mention icon and selected contact name successfully");
     }
 
+    /**
+     * 7. User should be able to click on Visual Editor and
+     * see the editor text-bar displays on top of the message box.
+     */
 
     @Test(description = "US 6 -AC7")
     public void verifyEditorTextBarDisplay() {
+
         test = report.createTest("Editor text bar display");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
@@ -45,15 +50,20 @@ public class AppreciationTabTests extends AbstractTestBase {
         appreciationTab.clickVisualEditor();
         Assert.assertTrue(appreciationTab.editorTextBarDisplay());
 
-        test.pass("Editor text bar displayed successfully");
+        test.pass("Editor text bar is displayed successfully");
 
     }
 
+    /**
+     * User should be able to click on the Topic icon to see
+     * the Appreciation Topic text box displays on top of the message box.
+     */
 
     @Test(description = "US 6 -AC8")
     public void verifyTopicTextBoxDisplay() {
         test = report.createTest("Topic text icon display");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
@@ -62,20 +72,28 @@ public class AppreciationTabTests extends AbstractTestBase {
 
         Assert.assertTrue(appreciationTab.topicTitleDisplay());
 
-        test.pass("Topic text box displayed successfully");
+        test.pass("Topic text box is displayed successfully");
     }
 
-
+    /**
+     * User should be able to  creating new tags by clicking on the # icon.
+     */
     @Test(description = "US 6 -AC10")
     public void verifyCreatedNewTag() {
         test = report.createTest("Create new Tag ");
         LoginPage loginPage = new LoginPage();
+        AppreciationTab appreciationTab = new AppreciationTab();
         loginPage.loginAsHr();
         appreciationTab.navigateTo("Appreciation");
 
         appreciationTab.createNewTag("#Batch15");
 
+        String actual=appreciationTab.getTagName().substring(1);
+        String expected="Batch15";
 
+        Assert.assertEquals(actual,expected);
+
+        test.pass("Tag is created successfully");
 
     }
 

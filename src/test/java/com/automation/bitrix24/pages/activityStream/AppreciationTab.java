@@ -186,5 +186,11 @@ public class AppreciationTab extends AbstractPageBase {
         BrowserUtils.wait(5);
         return topicTitle.isDisplayed();
     }
+
+    public String getTagName(){
+       BrowserUtils.wait(5);
+        return tagList.getText();
+
+    }
 }
 
