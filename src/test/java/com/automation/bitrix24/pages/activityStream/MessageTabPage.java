@@ -30,7 +30,7 @@ public class MessageTabPage extends AbstractPageBase {
     @FindBy(css = "input[value='Save']")
     private WebElement linkSaveBtn;
 
-    @FindBy(css = "[class='bxhtmled-top-bar-btn bxhtmled-button-video bxhtmled-top-bar-btn-active']")
+    @FindBy(xpath = "//*[@id=\"bx-b-video-blogPostForm\"]/span")
     private WebElement videoIcon;
 
     @FindBy(css = "[class^='bxhtmled-top-bar-btn bxhtmled-button-quote']")
@@ -90,9 +90,24 @@ public class MessageTabPage extends AbstractPageBase {
     @FindBy(css = "a[href='www.google.com']")
     private WebElement linkInBody;
 
-
     @FindBy (xpath = "//*[@id='feed-add-post-destination-item']/span[2]/span")
     private WebElement addedToInput;
+
+    @FindBy(css = "[id='video_idPostFormLHE_blogPostForm-source']")
+    private WebElement videoSourceInput;
+
+    @FindBy(xpath = "//*[@class='adm-btn-save']")
+    private WebElement videoAddSaveBtn;
+
+    @FindBy(css = "[id='video_idPostFormLHE_blogPostForm-title']")
+    public WebElement videoTitle;
+
+    public void clickVideoAddSaveBtn(){
+        wait.until(ExpectedConditions.visibilityOf(videoAddSaveBtn)).click();
+    }
+    public void enterVideoSourceInput(String videoUrl){
+        wait.until(ExpectedConditions.visibilityOf(videoSourceInput)).sendKeys(videoUrl);
+    }
 
     public String  getAddedToInputText(){
         return wait.until(ExpectedConditions.visibilityOf(addedToInput)).getText();

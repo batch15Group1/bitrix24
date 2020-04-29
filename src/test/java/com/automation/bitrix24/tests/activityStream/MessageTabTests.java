@@ -3,6 +3,7 @@ package com.automation.bitrix24.tests.activityStream;
 import com.automation.bitrix24.pages.LoginPage;
 import com.automation.bitrix24.pages.activityStream.MessageTabPage;
 import com.automation.bitrix24.tests.AbstractTestBase;
+import com.automation.bitrix24.utilities.BrowserUtils;
 import com.automation.bitrix24.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -47,7 +48,23 @@ public class MessageTabTests extends AbstractTestBase {
         messageTabPage.clickMessage();
         messageTabPage.clickToInputAddMore();
         messageTabPage.clickOnPeopleWithNum(1);
-        Assert.assertEquals(messageTabPage.getAddedToInputText(),messageTabPage.getPeopleWithNumText(1));
+        Assert.assertEquals(messageTabPage.getAddedToInputText(), messageTabPage.getPeopleWithNumText(1));
+    }
+
+    @Test
+    public void addVideo() {
+        String videoUrlYouTube = "https://www.youtube.com/watch?v=ad7L2g6HmQs&list=UUMi0CoZlu1_2ItKY25to5eQ&index=2";
+        String videoUrlVimeo = "https://vimeo.com/384129480";
+        loginPage.loginAsHr();
+        //go to youtube and search for storytime
+        //click the first video
+        //copy url and save it as a string
+
+        messageTabPage.clickMessage();
+        messageTabPage.clickVideoIcon();
+        messageTabPage.enterVideoSourceInput(videoUrlVimeo);
+        BrowserUtils.wait(5);
+        Assert.assertTrue(messageTabPage.videoTitle.isDisplayed());
     }
 
 }
