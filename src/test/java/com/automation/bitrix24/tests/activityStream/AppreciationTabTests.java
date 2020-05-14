@@ -144,7 +144,7 @@ public class AppreciationTabTests extends AbstractTestBase {
         login.loginAsMarketing();
         AppreciationTab appreciation = new AppreciationTab();
         appreciation.navigateTo("Appreciation");
-        Assert.assertTrue(appreciationTab.InsertVideo("https://vimeo.com/223939510"));
+        Assert.assertTrue(appreciation.InsertVideo("https://vimeo.com/223939510"));
         test.pass("Vimeo video was inserted successfully");
     }
 
@@ -156,7 +156,7 @@ public class AppreciationTabTests extends AbstractTestBase {
         login.loginAsMarketing();
         AppreciationTab appreciation = new AppreciationTab();
         appreciation.navigateTo("Appreciation");
-        Assert.assertTrue(appreciationTab.InsertVideo("https://www.youtube.com/watch?v=WPvGqX-TXP0"));
+        Assert.assertTrue(appreciation.InsertVideo("https://www.youtube.com/watch?v=WPvGqX-TXP0"));
         test.pass("Youtube video was inserted successfully");
     }
 
