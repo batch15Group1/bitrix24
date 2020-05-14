@@ -137,6 +137,7 @@ public class Posts extends AbstractPageBase {
         wait.until(ExpectedConditions.elementToBeClickable(commentReplies.get(0))).click();
     }
 
+    // function to send comment on a post
     public boolean sendCommentReply() {
 
         WebElement frameElement = postsList.get(0).findElement(By.xpath("//div[@class='bxhtmled-iframe-cnt']/iframe"));
@@ -157,7 +158,7 @@ public class Posts extends AbstractPageBase {
     @FindBy(xpath = "//div[@class='bx-ui-tooltip-user-name']")
     private WebElement reviewersBox;
 
-
+    // function to get reviewer's name from comments
     public void getReviewersName() {
         Actions action = new Actions(Driver.getDriver());
         BrowserUtils.wait(3);
